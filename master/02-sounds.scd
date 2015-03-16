@@ -4,18 +4,18 @@
 
 // Booting the server
 
-{{begin nostudent}}
+{begin nostudent}
 s.boot;
-{{end nostudent}}
+{end nostudent}
 
 // Super B
 
 
 // Our first sound
 
-{{begin nostudent}}
+{begin nostudent}
 { SinOsc.ar(440, 0, 0.1) }.play;
-{{end nostudent}}
+{end nostudent}
 
 // Stopping sounds
 // OS X:    Cmd .
@@ -29,27 +29,27 @@ s.makeWindow;    // Server Window: Master Volume, Mute, Boot and Record controls
 s.scope;         // Oscilloscope
 FreqScope.new;   // Frequency Analyser
 
-{{begin nostudent}}
+{begin nostudent}
 // SinOsc details, ar/kr, freq, phase, mul, add
 
 // use this to show phase
 { SinOsc.ar(440, [0, pi], 0.1, 0) }.play;
-{{end nostudent}}
+{end nostudent}
 
 // individual sounds
 
-{{begin nostudent}}
+{begin nostudent}
 a = { SinOsc.ar(440, 0, 0.1) }.play;
 a.free;
 
 // explain about global vars
-{{end nostudent}}
+{end nostudent}
 
 // mouse control
 
-{{begin nostudent}}
+{begin nostudent}
 a = { SinOsc.ar(MouseX.kr(100, 1000), 0, 0.1) }.play;
-{{end nostudent}}
+{end nostudent}
 
 // passing arguments
 
@@ -57,7 +57,7 @@ a = { SinOsc.ar(MouseX.kr(100, 1000), 0, 0.1) }.play;
 a = {|mul=0.1| SinOsc.ar(MouseX.kr(100, 1000), 0, mul) }.play;
 a.set(\mul, 0.2);
 a.free;
-{{end nostudent}}
+{end nostudent}
 
 
 // Get some chops, create a bunch of different sounds:
@@ -105,11 +105,11 @@ LFNoise0  // 10 - 2000
 {begin nostudent}
 s.record;
 s.stopRecording;
-{{end nostudent}}
+{end nostudent}
 
 
 
-{{begin nostudent}}
+{begin nostudent}
 (
     // select all the code and run it
     // use mouse to strum strings
@@ -145,4 +145,4 @@ s.stopRecording;
 
 }.play;
 )
-{{end nostudent}}
+{end nostudent}

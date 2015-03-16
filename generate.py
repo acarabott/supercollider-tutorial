@@ -27,9 +27,9 @@ for p in [students, me]:
         with scd.open() as s, new.open('w') as n:
             in_nostudent = False
             for line in s:
-                if '{{begin nostudent}}' in line:
+                if '{begin nostudent}' in line:
                     in_nostudent = True
-                elif '{{end nostudent}}' in line:
+                elif '{end nostudent}' in line:
                     in_nostudent = False
                 else:
                     if p is me or (p is students and not in_nostudent):
