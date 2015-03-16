@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3
+
 from pathlib import Path
 import shutil
 
