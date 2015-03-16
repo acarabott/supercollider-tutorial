@@ -109,7 +109,8 @@ s.stopRecording;
 
 
 
-{begin nostudent}
+// A bigger example (to prove there's light at the end of the tunnel)
+
 (
     // select all the code and run it
     // use mouse to strum strings
@@ -145,4 +146,3 @@ s.stopRecording;
 
 }.play;
 )
-{end nostudent}
