@@ -45,24 +45,10 @@ a.free;
 // explain about global vars
 {end nostudent}
 
-// mouse control
-
-{begin nostudent}
-a = { SinOsc.ar(MouseX.kr(100, 1000), 0, 0.1) }.play;
-{end nostudent}
-
-// passing arguments
-
-{begin nostudent}
-a = {|mul=0.1| SinOsc.ar(MouseX.kr(100, 1000), 0, mul) }.play;
-a.set(\mul, 0.2);
-a.free;
-{end nostudent}
-
-
-// Get some chops, create a bunch of different sounds:
 
 /*
+Get some chops, create a bunch of different sounds:
+
 Similar UGens to try:
   LFSaw
   LFTri
