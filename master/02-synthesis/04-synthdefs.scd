@@ -31,3 +31,20 @@ SynthDef(\tri, {|freq=440, mul=0.1, out=0|
 // .add     : method call that adds it to the Server
 {end nostudent}
 
+// Creating a Synth
+{begin nostudent}
+~tri = Synth(\tri, [\freq, 220, \mul, 0.05]);
+
+50.do {
+    Synth(\tri, [\freq, rrand(100, 5000), \mul, 0.01]);
+};
+
+
+{
+    4.collect {|oct| oct * 12 + [60, 67, 68, 75] }.flat.do {|note|
+        Synth(\tri, [\freq, note.midicps, \mul, 0.01]);
+        0.1.wait;
+    };
+}.fork;
+
+{end nostudent}
