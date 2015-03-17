@@ -29,6 +29,16 @@ s.makeWindow;    // Server Window: Master Volume, Mute, Boot and Record controls
 s.scope;         // Oscilloscope
 FreqScope.new;   // Frequency Analyser
 
+/*
+WARNING!
+SuperCollider gives you the power to damage your hearing (and that of others),
+be careful with your muls. 1 == FULL VOLUME
+
+Be cautious with your computers volume when working on something unknown.
+Can plug in headphones and put them on the desk / put around your neck
+
+*/
+
 {begin nostudent}
 // SinOsc details, ar/kr, freq, phase, mul, add
 

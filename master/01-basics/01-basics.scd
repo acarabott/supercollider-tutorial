@@ -2,7 +2,11 @@
 /* 01 Basics                                                    */
 /* ============================================================ */
 
-// Hello World, running code
+// Hello World
+
+// Running code
+// ------------
+
 // Super Return
 // OS X:    Super == Cmd
 // Lin/Win: Super == Ctrl
@@ -26,19 +30,24 @@
 {end nostudent}
 
 // Clearing the post window
+// ------------------------
 // Super Shift P
 
 
 
 // Getting Help
+// ------------
 // Super D
 
 
 // Parts of the IDE
+// ----------------
 
 
 
 // Comments
+// --------
+
 // Super /
 
 /*
@@ -48,7 +57,7 @@ Comments
 
 
 // global variables
-
+// ----------------
 {begin nostudent}
 a = "Hello Resonate";
 b = 10;
