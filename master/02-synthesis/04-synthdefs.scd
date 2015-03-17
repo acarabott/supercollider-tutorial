@@ -48,3 +48,25 @@ SynthDef(\tri, {|freq=440, mul=0.1, out=0|
 }.fork;
 
 {end nostudent}
+
+// Variables inside SynthDefs
+// ---------------------------
+
+{begin nostudent}
+SynthDef(\ugly, { |out=0|
+    Out.ar(out,
+        RLPF.ar(LFSaw.ar(MouseX.kr(110, 880), 0, MouseY.kr(0.2, 0)), 800, 0.2);
+    );
+}).add;
+
+SynthDef(\pretty, { |out=0|
+    var freq    = MouseX.kr(110, 880);
+    var mul     = MouseY.kr(0.2, 0);
+    var saw     = LFSaw.ar(freq, 0, mul);
+    var filter  = RLPF.ar(saw, 800, 0.2);
+
+    Out.ar(out,
+        filter
+    );
+}).add;
+{end nostudent}
