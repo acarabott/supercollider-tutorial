@@ -3,11 +3,18 @@
 from pathlib import Path
 import shutil
 
-
+BEGIN = '{begin nostudent}'
+END = '{end nostudent}'
+PREFIX = "// "
+BEGIN_MARKER = PREFIX + (80 - (len(PREFIX + BEGIN))) * '`' + BEGIN + '\n'
+END_MARKER = PREFIX + (80 - len(PREFIX + END)) * '-' + END + '\n'
 
 master = Path("./master/")
 students = Path("./students/")
 me = Path("./me/")
+
+
+
 
 for p in [students, me]:
     print(80 * "-")
@@ -34,18 +41,16 @@ for scd in master.glob('**/*.scd'):
         with scd.open() as s, new.open('w') as n:
             in_nostudent = False
             for line in s:
-                if '{begin nostudent}' in line:
+                if BEGIN in line:
                     in_nostudent = True
 
                     if p is me:
-                        n.write('//' + '=' * 10 + ' ')
-                        n.write(line)
-                elif '{end nostudent}' in line:
+                        n.write(BEGIN_MARKER)
+                elif END in line:
                     in_nostudent = False
 
                     if p is me:
-                        n.write('//' + '-' * 10 + ' ')
-                        n.write(line)
+                        n.write(END_MARKER)
                 else:
                     if p is me or (p is students and not in_nostudent):
                         n.write(line)
