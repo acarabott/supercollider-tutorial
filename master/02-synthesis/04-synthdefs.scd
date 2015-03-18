@@ -70,3 +70,9 @@ SynthDef(\pretty, { |out=0|
     );
 }).add;
 {end nostudent}
+
+// Polling values in running Synths
+// --------------------------------
+
+// .poll(rate, label)
+// SinOsc.ar(440, 0, 0.1).poll(30, "sine")
