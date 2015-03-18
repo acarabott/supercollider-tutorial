@@ -9,14 +9,15 @@ PREFIX = "// "
 BEGIN_MARKER = PREFIX + (80 - (len(PREFIX + BEGIN))) * '`' + BEGIN + '\n'
 END_MARKER = PREFIX + (80 - len(PREFIX + END)) * '-' + END + '\n'
 
-master = Path("./master/")
-students = Path("./students/")
-me = Path("./me/")
+master =    Path("./master/")
+students =  Path("./students/")
+clean =     Path("./clean/")
+me =        Path("./me/")
+
+create = [students, me, clean]
 
 
-
-
-for p in [students, me]:
+for p in create:
     print(80 * "-")
 
     # delete old dirs
@@ -34,7 +35,7 @@ for p in [students, me]:
 
 # create new .scd files, without nostudent blocks
 for scd in master.glob('**/*.scd'):
-    for p in [students, me]:
+    for p in create:
         new = p / '/'.join(scd.parts[1:])
         new.touch(0o755)
 
@@ -52,7 +53,7 @@ for scd in master.glob('**/*.scd'):
                     if p is me:
                         n.write(END_MARKER)
                 else:
-                    if p is me or (p is students and not in_nostudent):
+                    if p in [me, clean] or (p is students and not in_nostudent):
                         n.write(line)
 
         print("created {}".format(new))
