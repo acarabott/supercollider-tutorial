@@ -3,25 +3,30 @@
 /* ============================================================ */
 
 {begin nostudent}
+// Might have noticed a click when freeing Synth
+// occurs with very fast transition, can be artistic
+Env([0, 1, 0, 0], [2, 0, 2]).test.plot
+
 // May be familiar with envlopes like ADSR
 Env.adsr.plot;
 Env.adsr.test;
 Env.perc.test.plot;
+
 {end nostudent}
 
 // Defined by levels and times
+// ---------------------------
 {begin nostudent}
 Env([0, 1, 0], [0.5, 1]).plot;
 {end nostudent}
 
 // Somewhat analogous to vector graphics
-
 // Can convert to concrete set of values (like bitmap)
-{begin nostudent}
 Env([0, 1, 0], [0.5, 1]).asSignal(100)
-{end nostudent}
 
-// Segments can have curves
+
+// Segments curves
+// ---------------
 {begin nostudent}
 Env([0, 1, 0], [0.5, 1], \sin).plot;
 Env([0, 1, 0], [0.5, 1], [\sin, \exp]).plot;
