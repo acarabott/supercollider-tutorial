@@ -2,7 +2,8 @@
 /* Combining sounds                                             */
 /* ============================================================ */
 
-// Combine multiple signals with Mix
+// Mix
+// ---
 
 {begin nostudent}
 SynthDef(\mix, { |freq=440, mul=0.1, nmul=0.1, out=0|
