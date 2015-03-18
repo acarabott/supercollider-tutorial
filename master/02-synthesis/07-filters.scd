@@ -29,6 +29,7 @@ BPF; // already resonant
 {begin nostudent}
 FreqScope.new;
 {BPF.ar(WhiteNoise.ar(0.5), 800, MouseY.kr(1e-9, 1, 0).poll); }.play;
+// Subtractive synthesis
 {end nostudent}
 
 
