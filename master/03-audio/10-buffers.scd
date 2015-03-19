@@ -20,9 +20,13 @@ b = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav", action:{|buf|
 
 b.play;
 b.plot;
+b.free;
 // lots more in Buffer help file
+
+// Can generate buffers (sine etc)
+
+// Drag audio file to document
 
 // Dialog
 Buffer.loadDialog(s);
 {end nostudent}
-
