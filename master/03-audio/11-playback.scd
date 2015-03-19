@@ -39,7 +39,8 @@ b.numFrames - 2
 // -------
 
 {begin nostudent}
-~drumBuf = Buffer.read(s, "~/Projects/15-04_resonate/workshop/master/03-audio/audio/drumloop.wav".standardizePath);
+~dpath = "~/Projects/15-04_resonate/workshop/master/03-audio/audio/drums.wav";
+~drumBuf = Buffer.read(s, ~dpath.standardizePath);
 
 SynthDef(\looper, {|buf=0, rate=1, gate=1, startPos=0, startLoop=0, endLoop=0,
                     pan=0, out=0|
