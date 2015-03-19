@@ -76,3 +76,10 @@ SynthDef(\pretty, { |out=0|
 
 // .poll(rate, label)
 // SinOsc.ar(440, 0, 0.1).poll(30, "sine")
+
+
+
+// Tracing Synths
+// --------------
+
+synth.trace;
