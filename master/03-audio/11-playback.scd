@@ -96,4 +96,28 @@ x.set(\t_trig, 1, \reset, 0);
 x.free;
 {end nostudent}
 
+// DiskIn
+// ------
 
+// Using a Buffer to stream large audio files from disk
+
+{begin nostudent}
+SynthDef(\diskin, { |buf=0, out=0|
+    var sig = DiskIn.ar(2, buf);
+
+    Out.ar(out,
+        sig;
+    );
+}).add;
+
+~gpath = "~/Projects/15-04_resonate/workshop/master/03-audio/audio/guitar.wav";
+~guitarBuf = Buffer.cueSoundFile(
+    server: s,
+    path: ~gpath.standardizePath,
+    startFrame: 0,
+    numChannels: 2,
+    bufferSize: 2**18
+);
+
+x = Synth(\diskin, [\buf, ~guitarBuf]);
+{end nostudent}
