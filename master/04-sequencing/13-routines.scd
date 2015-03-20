@@ -33,6 +33,20 @@ r.reset;
 // If you want to stop and restart, easier to stop, recreate and play
 // r.stop;r.reset; // same time will restart it
 // r.yieldAndReset
+
+~makeRoutine = {
+    Routine {
+        "yo".postln;
+        2.wait;
+        "Mo".postln;
+        4.wait;
+        "Fo sho".postln;
+    };
+};
+
+r = ~makeRoutine.();
+r.play;
+r.stop; r = ~makeRoutine.(); r.play;
 {end nostudent}
 
 
