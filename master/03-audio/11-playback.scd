@@ -43,7 +43,7 @@ b.numFrames - 2
 ~drumBuf = Buffer.read(s, ~dpath.standardizePath);
 
 SynthDef(\looper, {|buf=0, rate=1, gate=1, startPos=0, startLoop=0, endLoop=0,
-                    pan=0, out=0|
+                    pan=0, mul=1, out=0|
 
     var sig = LoopBuf.ar(1,
                          buf,
@@ -55,7 +55,7 @@ SynthDef(\looper, {|buf=0, rate=1, gate=1, startPos=0, startLoop=0, endLoop=0,
                          4);
 
     Out.ar(out,
-        Pan2.ar(sig, pan);
+        Pan2.ar(sig, pan) * mul;
     );
 }).add;
 
@@ -67,7 +67,6 @@ x = Synth(\looper, [
 ]);
 
 x.set(\rate, 1);
-
 x.set(\startLoop, 0, \endLoop, ~drumBuf.numFrames * 0.5 / 1);
 
 {end nostudent}
