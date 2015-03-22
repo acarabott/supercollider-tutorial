@@ -86,6 +86,7 @@ pi.tan;
 
 true && false;      // logical and
 true || false;      // logical or
+(2 == 4).not;       // negate
 
 
 
