@@ -128,8 +128,6 @@ OSCdef(\muldef, {|msg, time, addr, recvPort|
 
 x = Synth(\poll, [\freq, 220]);
 
-get
-
 // .get
 // ----
 
@@ -157,4 +155,8 @@ x = Synth(\poll, [\freq, 220]);
 ~bus.value = 400;
 
 x.map(0, ~bus);
+// asynchronous
 ~bus.get({|msg| msg.postln});
+
+// synchronous
+~bus.getSynchronous
