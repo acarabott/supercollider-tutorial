@@ -49,3 +49,5 @@ SynthDef(\comb, { |in=0, del=0.1, out=0|
 ~comb.set(\del, 0.01);
 ~verb.set(\room, 0.8);
 {end nostudent}
+
+// Groups can be nested within Groups, within Groups, within Groups......
