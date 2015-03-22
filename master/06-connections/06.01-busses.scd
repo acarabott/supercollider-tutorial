@@ -54,6 +54,16 @@ s.makeWindow;
 
 ~filter = Synth.after(~sig, \filter, [\in, ~abus]);
 ~sig2 = Synth.before(~filter, \source, [\freq, 523, \out, ~abus]);
+// before
+// after
+// replace
+
+
+// alternative syntax
+~sig3 = Synth(\source, [\freq, 660, \out, ~bus], ~filter, \addBefore);
+// \addBefore
+// \addAfter
+// \addReplace
 {end nostudent}
 
 
