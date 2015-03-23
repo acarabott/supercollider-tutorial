@@ -212,19 +212,12 @@ f.();
 // shorthand for
 f.value;
 
-// last value returned
-~add = {|a, b|
-    a + b;
+// parameters
+~print = {|thing|
+    thing.postln;
 };
 
-~add.(10, 20);
-
-// prevent returning
-~time = SystemClock.seconds;
-~update = {
-    ~time = SystemClock.seconds;
-    nil;
-};
+~print.("yo");
 
 // default parameters
 f = {|one, two=10|
@@ -254,8 +247,45 @@ f.(5, 10, three:15, 20);
 f.(5, 10, four:20, three: 15);
 
 
+// unknown number of arguments, array
+f = {|...args|
+    args.postln;
+};
+
+f.(1, 2, 3, 4, 5);
+
+f = {|...sgra|
+    sgra.postln;
+};
+
+f.([5, 4, 3, 2, 1]);
+
+f = {|one...args|
+    one.postln;
+    args.postln;
+};
+
+f.(1, 2, 3, 4, 5);
+
+// Returning values: last thing
+// ----------------------------
+~add = {|a, b|
+    a + b;
+};
+
+~add.(10, 20);
+
+// prevent returning
+~time = SystemClock.seconds;
+~update = {
+    ~time = SystemClock.seconds;
+    nil;
+};
+
+
 
 // "first class objects"
+// ---------------------
 // can be treated as any other object
 
 // array of functions
