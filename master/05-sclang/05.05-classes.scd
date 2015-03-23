@@ -92,7 +92,7 @@ Drummer : Object {
 
     // Task: Implement this
     random {
-        this.play(x.buffers.keys.choose);
+        this.play(this.buffers.keys.choose);
     }
 
     // Tasks:
