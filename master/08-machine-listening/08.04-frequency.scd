@@ -54,6 +54,7 @@ n = MultiSliderView(w, Rect(0, 300, 1024, 300));
 n.size_(512);
 n.thumbSize_(2);
 )
+
 OSCdef(\fft, {|msg, time, addr, recvPort|
     {begin nostudent}
     var data = msg[3..];
@@ -69,8 +70,37 @@ x = Synth(\fft, [\buf, b]);
 
 
 
+// MFCC
+// ----
+// Mel-Frequency Cepstrum Coefficients
+// The mel (from melody) scale is a based on human perception
+// Often used for timbre analysis, and speech recognition
 
-MFCC
+SynthDef(\mfcc, { |buf=0, rate=1, out=0, mfccout=0|
+    var sig = PlayBuf.ar(1, buf, BufRateScale.kr(buf) * rate, loop: 1);
+    var fft = FFT(LocalBuf(512, 1), sig);
+// {begin nostudent}
+    var mfccs = MFCC.kr(fft, 13);
+    Out.kr(mfccout, mfccs);
+// {end nostudent}
+
+    Out.ar(out,
+        sig.dup;
+    );
+}).add;
+
+(
+w = Window("MFCCs", Rect(2000, 100, 600, 300)).front;
+m = MultiSliderView(w, Rect(0, 0, 600, 300));
+m.size_(12);
+m.gap_(0);
+m.thumbSize_(600/12);
+)
+
+~bus = Bus.control(s, 1);
+x = Synth(\mfcc, [\buf, b]);
+
+
 SpecFlatness
 SpecPcile
 SpecCentroid
