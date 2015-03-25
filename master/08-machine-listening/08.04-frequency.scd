@@ -23,7 +23,9 @@ SynthDef(\fft, { |buf=0, rate=1, out=0|
 
 {begin nostudent}
     var fftsize = 512;
-    var fft = FFT(LocalBuf(fftsize, 1), sig);
+    // 0.5 hop size
+    // 1 hann window type
+    var fft = FFT(LocalBuf(fftsize, 1), sig, 0.5, 1);
     var new = IFFT(fft);
 
     // var unpack = UnpackFFT(fft, fftsize, 0, fftsize);
@@ -37,7 +39,6 @@ SynthDef(\fft, { |buf=0, rate=1, out=0|
     // var new = IFFT(pack);
 
     // SendReply.kr(Impulse.kr(30), '/fft', [mags, altmags].flat);
-
 {end nostudent}
 
     Out.ar(out,
@@ -46,7 +47,7 @@ SynthDef(\fft, { |buf=0, rate=1, out=0|
 }).add;
 
 (
-w = Window("bands", Rect(100, 100, 1024, 600)).front;
+w = Window("bins", Rect(100, 100, 1024, 600)).front;
 m = MultiSliderView(w, Rect(0, 0, 1024, 300));
 m.size_(512);
 m.thumbSize_(2);
@@ -67,6 +68,46 @@ OSCdef(\fft, {|msg, time, addr, recvPort|
 }, '/fft');
 
 x = Synth(\fft, [\buf, b]);
+
+
+// Sub bands
+// ---------
+
+SynthDef(\fftbands, { |buf=0, mode=1, out=0|
+    var sig = PlayBuf.ar(1, buf, BufRateScale.kr(buf), loop: 1);
+    var fft = FFT(LocalBuf(1024, 1), sig, 0.5, 1);
+    // divide into bands
+    //    0 -   80
+    //   80 -  250
+    //  250 -  500
+    //  500 - 2000
+    // 2000 - samplerate / 2
+    var powers = FFTSubbandPower.kr(fft, [80, 250, 500, 2000], scalemode: mode);
+
+    SendReply.kr(Impulse.kr(30), '/bands', powers);
+
+    Out.ar(out,
+        sig.dup;
+    );
+}).add;
+
+(
+w = Window("bands", Rect(2000, 100, 600, 300)).front;
+m = MultiSliderView(w, Rect(0, 0, 600, 300));
+m.size_(5);
+m.gap_(0);
+m.thumbSize_(600/5);
+)
+
+OSCdef(\bands, {|msg, time, addr, recvPort|
+    var bands = msg[3..];
+
+    {m.value = bands}.defer;
+}, '/bands');
+
+x = Synth(\fftbands, [\buf, b]);
+x.set(\mode, 2);
+
 
 
 
@@ -101,59 +142,11 @@ m.thumbSize_(600/12);
 x = Synth(\mfcc, [\buf, b]);
 
 
+
+// See also
+// --------
 SpecFlatness
 SpecPcile
 SpecCentroid
 
-
-// notes
-// Buffer size determines number of bins (if hop == 1)
-// can unpack with UnpackFFT
-// custom bands with FFTSubbandPower
-s.boot.doWhenBooted {
-    var fftsize = 1024;
-    b = Buffer.alloc(s, fftsize, 1);
-    c = Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
-}
-
-(
-SynthDef(\fff, {
-    var sig, chain, unp, mags;
-//     sig = SinOsc.ar;
-//     sig = PlayBuf.ar(1, c, BufRateScale.kr(c), loop: 1);
-    // sig = SoundIn.ar(0);
-    sig = SinOsc.ar(MouseX.kr(20, 20000, 1), 0, 0.1);
-    chain = FFT(b, sig);
-
-    // Using the frombin & tobin args makes it much more efficient, limiting analysis to the bins of interest
-    unp = UnpackFFT(chain, b.numFrames, frombin: 0, tobin: 1024);
-
-    // Demand some data from the unpacker.
-    // NOTE: At present, Demand.kr is unable to handle more than 32 inputs,
-    // so using frombin & tobin to limit the number of bins is compulsory.
-    mags = Demand.kr(chain >= 0, 0, unp).select{|anunp, index|
-//         anunp.poll(label:if(index % 2 == 0,  "Magnitude", "Phase")+(index/2).floor);
-
-        index.even;
-    };
-
-    SendReply.kr(Impulse.kr(60), '/mags', mags);
-
-    Out.ar(0,
-        (sig*0.1).dup;
-    );
-}).add;
-
-
-)
-x = Synth(\fff);
-
-x.free;
-OSCdef(\fff, {|msg, time, addr, recvPort|
-    var mags = msg[3..];
-
-    {
-        m.value_(mags);
-    }.fork(AppClock);
-}, '/mags');
-
+// Help -> UGens > Analysis
