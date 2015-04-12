@@ -48,7 +48,7 @@ OSCdef(\testListener).free;
 // One shot
 // --------
 {begin nostudent}
-OSCdef(\mayfly, {|msg, time, addr, recvPort|
+OSCdef(\mayfly, {
     "What a life....".postln;
 }, '/test').oneShot;
 {end nostudent}
@@ -62,9 +62,9 @@ OSCdef(\mayfly, {|msg, time, addr, recvPort|
 
 // Restrict IP and port messages sent from
 {begin nostudent}
-n = NetAddr("127.0.0.1", 8888);
+n = NetAddr("127.0.0.1", 6666);
 
-OSCdef(\secret, {|msg, time, addr, recvPort|
+OSCdef(\secret, {
     "what's the password?".postln;
 }, '/test', n);
 {end nostudent}
@@ -103,7 +103,7 @@ OSCdef(\secret, {|msg, time, addr, recvPort|
 {begin nostudent}
 OSCdef(\secret, {|msg, time, addr, recvPort|
     "what's the password?".postln;
-}, '/test', n, 8888);
+}, '/test', n, 6666);
 
 // automatically opens port for us
 thisProcess.openPorts;
