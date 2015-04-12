@@ -112,6 +112,15 @@ if(true || (4 < 10)) {
     'yo'.postln;
 };
 
+// can be Useful
+{begin nostudent}
+[1, 2, 3, 4]
+[1, 2, 3, 4] + 10
+[1, 2, 3, 4] + 10 * 10 / 3.5
+
+// otherwise would have to write
+((([1, 2, 3, 4] + 10) * 10) / 3.5)
+{end nostudent}
 
 
 // Control Structures
