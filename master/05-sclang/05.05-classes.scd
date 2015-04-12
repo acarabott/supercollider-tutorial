@@ -104,7 +104,7 @@ Drummer : Object {
 
 s.boot;
 Drummer.addSynthDefs;
-x = Drummer("Bob", "~/Projects/15-04_resonate/workshop/audio/linndrum");
+x = Drummer("Bob", "~/Projects/15-04_resonate/workshop/audio/drums/linndrum");
 x.name = "Jim";
 x.name_("Jim")
  .vol_(0.5);

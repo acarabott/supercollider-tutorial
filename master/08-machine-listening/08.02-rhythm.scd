@@ -29,7 +29,7 @@ OSCdef(\onsets, {|msg, time, addr, recvPort|
 // Beat Tracking
 // -------------
 
-~apath = "~/Projects/15-04_resonate/workshop/audio/amen.wav";
+~apath = "~/Projects/15-04_resonate/workshop/audio/loops/amen.wav";
 ~abuf = Buffer.read(s, ~apath.standardizePath);
 
 SynthDef(\beatTrack, { |buf=0, lock=0, rate=1, muls=#[0.3, 0.3, 0.3], out=0|

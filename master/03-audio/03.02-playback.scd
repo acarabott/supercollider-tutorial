@@ -39,7 +39,7 @@ b.numFrames - 2
 // -------
 
 {begin nostudent}
-~dpath = "~/Projects/15-04_resonate/workshop/audio/drumloop.wav";
+~dpath = "~/Projects/15-04_resonate/workshop/audio/loops/drumloop.wav";
 ~drumBuf = Buffer.read(s, ~dpath.standardizePath);
 
 SynthDef(\looper, {|buf=0, rate=1, gate=1, startPos=0, startLoop=0, endLoop=0,
@@ -109,7 +109,7 @@ SynthDef(\diskin, { |buf=0, out=0|
     );
 }).add;
 
-~gpath = "~/Projects/15-04_resonate/workshop/audio/guitarloop.wav";
+~gpath = "~/Projects/15-04_resonate/workshop/audio/loops/guitarloop.wav";
 ~guitarBuf = Buffer.cueSoundFile(
     server: s,
     path: ~gpath.standardizePath,
