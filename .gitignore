@@ -1,8 +1,4 @@
 .DS_Store
-students/
-me/
-clean/
-materials/
 comp.sh
-downloads/
-audio/
+05-installers
+03-audio/
