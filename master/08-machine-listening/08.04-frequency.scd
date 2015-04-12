@@ -116,10 +116,16 @@ x.set(\mode, 2);
 // Mel-Frequency Cepstrum Coefficients
 // The mel (from melody) scale is a based on human perception
 // Often used for timbre analysis, and speech recognition
+~wePath = "~/Projects/15-04_resonate/workshop/audio/jeff-buckley/we02.aiff";
+~ownPath = "~/Projects/15-04_resonate/workshop/audio/jeff-buckley/own04.aiff";
+
+~we = Buffer.read(s, ~wePath.standardizePath);
+~own = Buffer.read(s, ~ownPath.standardizePath);
 
 SynthDef(\mfcc, { |buf=0, rate=1, out=0, mfccout=0|
-    var sig = PlayBuf.ar(1, buf, BufRateScale.kr(buf) * rate, loop: 1);
-    var fft = FFT(LocalBuf(512, 1), sig);
+    var sig = PlayBuf.ar(2, buf, BufRateScale.kr(buf) * rate, loop: 1);
+    var fft = FFT(LocalBuf(512, 1), Mix(sig));
+
 // {begin nostudent}
     var mfccs = MFCC.kr(fft, 13);
     Out.kr(mfccout, mfccs);
@@ -139,8 +145,19 @@ m.thumbSize_(600/12);
 )
 
 ~bus = Bus.control(s, 1);
-x = Synth(\mfcc, [\buf, b]);
+x = Synth(\mfcc, [\buf, b, \mfccout, ~bus]);
 
+Tdef(\mfccs, {
+    inf.do {|i|
+        ~bus.getn(13, {|msg|
+            { m.value_(msg) }.defer;
+        });
+        0.05.wait;
+    }
+}).play;
+
+x.set(\buf, ~own);
+x.set(\buf, ~we);
 
 
 // See also
