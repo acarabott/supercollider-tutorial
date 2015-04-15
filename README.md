@@ -1,5 +1,9 @@
 # Resonate SuperCollider Workshop
 
+## Extra Session
+- Concat
+- setting up a project
+
 ## Day structure
 
 - 10:00 - 10:15 - Setup, questions (15m)
