@@ -2,7 +2,7 @@
 /* Buffers                                                      */
 /* ============================================================ */
 
-// An array of floats, in memory, that live on the server
+// An array of floats, in memory, that lives on the server
 
 // Most common use is to hold audio: loading audio files, recording audio input
 
