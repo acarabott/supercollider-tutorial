@@ -13,8 +13,8 @@ SkipJack.stopAll;
 
 // Things to do before booting the server;
 ~serverSkipJackAction = {
-    Server.default.options.outDevice = ~curOpts['outDevice'];
-    Server.default.options.hardwareBufferSize = ~curOpts['hardwareBufferSize'];
+    Server.default.options.outDevice = "Built-in Output";
+    Server.default.options.hardwareBufferSize = "Built-in Input";
     Server.default.options.numOutputBusChannels = 10;
     Server.default.options.sampleRate = 44100;
 
@@ -28,9 +28,10 @@ SkipJack.stopAll;
 // if it gets to -2, quit supercollider
 
 // Stay alive
-~alive = 3;
+~checkMax = 3;
+~alive = ~checkMax;
 ~click = {
-    ~alive = 3
+    ~alive = ~checkMax;
 };
 
 ~langSkipJackAction = {
@@ -55,5 +56,5 @@ SkipJack.stopAll;
     };
 }.play;
 
-SkipJack(~langSkipJackAction, ~alive - 1, name: "sclang");
+SkipJack(~langSkipJackAction, ~checkMax - 1, name: "sclang");
 SkipJack(~serverSkipJackAction, 10, name: "scsynth");
