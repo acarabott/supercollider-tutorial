@@ -5,31 +5,45 @@
 {begin nostudent}
 Drummer : Object {
     classvar < synthdefs;
+    classvar < synthdefsAdded;
 
     var <> name;
     var <  path;
-    var <  buffers;
     var <  server;
+
+    var    buffers;
     var <> vol;
 
     *initClass {
+        synthdefsAdded = false;
         this.createSynthDefs();
     }
 
     *createSynthDefs {
         synthdefs = [1, 2].collect {|nc|
-            var name = ("drummer-" ++ nc).asSymbol;
-            SynthDef(name, { |buf=0, mul=1, pan=0, out=0|
+            var name = ("drummer_" ++ nc);
+
+            SynthDef(name, {|buf=0, mul=1, pan=0, out=0|
+                var sig;
+                sig = PlayBuf.ar(nc, buf, BufRateScale.kr(buf), doneAction:2);
+
                 Out.ar(out,
-                    PlayBuf.ar(nc, buf, BufRateScale.kr(buf), doneAction: 2);
+                    Pan2.ar(sig, pan, mul);
                 );
             });
         };
     }
 
     *addSynthDefs {
-        this.synthdefs.do {|synthdef|
-            synthdef.add;
+        if(synthdefsAdded) {
+            ^nil;
+        };
+
+        if(synthdefsAdded.not) {
+            this.synthdefs.do {|synthdef|
+               synthdef.add;
+            };
+            synthdefsAdded = true;
         }
     }
 
@@ -42,10 +56,24 @@ Drummer : Object {
         name = aName;
         path = aAudioPath;
         server = aServer;
-        vol = 1;
 
-        buffers = IdentityDictionary[];
-        this.loadBuffers(path);
+        server.waitForBoot {
+            buffers = this.loadBuffers(path, server);
+            this.class.addSynthDefs;
+        };
+        vol = 1.0;
+    }
+
+    loadBuffers {|audioPath, server|
+        var match = audioPath.standardizePath +/+ "*";
+        var pairs = SoundFile.collect(match).collect {|sf, i|
+            var key = sf.path.basename.splitext[0].asSymbol;
+            var buf = Buffer.read(server, sf.path);
+
+            [key, buf];
+        };
+
+        ^IdentityDictionary.newFrom(pairs.flat);
     }
 
     freeBuffers {
@@ -55,52 +83,49 @@ Drummer : Object {
         buffers.clear();
     }
 
-    loadBuffers {|audioPath|
-        var match = audioPath.standardizePath +/+ "*";
-        var pairs = SoundFile.collect(match).collect {|sf, i|
-            var key = sf.path.basename.splitext[0].asSymbol;
-            var buf = Buffer.read(server, sf.path);
+    hits {
+        ^buffers.keys.asArray;
+    }
 
-            [key, buf];
+    play {|key, mul=1, pan=0, out=0|
+        var buffer, numChannels, synthdefName;
+
+        if(buffers.includesKey(key).not) {
+            "No buffer with this key".postln;
+            ^nil;
         };
-        buffers = IdentityDictionary.newFrom(pairs.flat);
+
+        buffer = buffers[key];
+        numChannels = buffer.numChannels;
+        synthdefName = this.class.synthdefs[numChannels - 1].name;
+
+        Synth(synthdefName, [
+            \buf, buffer,
+            \mul, mul * vol,
+            \pan, pan,
+            \out, out
+        ]);
+    }
+
+    randomHit {
+        this.play(this.buffers.keys.choose);
     }
 
     path_ {|aPath|
         path = aPath;
         this.freeBuffers();
-        this.loadBuffers(path);
+        buffers = this.loadBuffers(path, server);
     }
 
-    hits {
-        ^buffers.keys;
+    buffers {
+        ^buffers.shallowCopy;
     }
-
-    play {|key, mul=1, pan=0, out=0|
-        var buffer, nc, synthdef;
-
-        if(buffers.includesKey(key).not) {
-            ^nil;
-        };
-
-        buffer = buffers[key];
-        nc = buffer.numChannels;
-        synthdef = this.class.synthdefs[nc - 1].name;
-
-        Synth(synthdef, [\buf, buffer, \mul, mul * vol, \pan, pan, \out, out]);
-    }
-
-    // Task: Implement this
-    random {
-        this.play(this.buffers.keys.choose);
-    }
-
-    // Tasks:
-    // - print hits method
-    // - play a routine to a clock
-    // - use Tdefs
 }
 
+// Tasks:
+// - print hits method
+// - play a routine to a clock
+// - use Tdefs
 
 s.boot;
 Drummer.addSynthDefs;
